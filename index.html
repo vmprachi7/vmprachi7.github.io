@@ -1,10 +1,1000 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My DevOps Portfolio</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Prachi — Senior DevOps & Platform Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --navy: #0a1628;
+  --navy2: #0f2040;
+  --teal: #00d4ff;
+  --teal2: #00ffcc;
+  --orange: #ff6b35;
+  --pink: #ff3d8a;
+  --white: #f0f4ff;
+  --muted: #8899bb;
+  --card: rgba(15,32,64,0.7);
+  --border: rgba(0,212,255,0.15);
+  --glow: 0 0 30px rgba(0,212,255,0.2);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+html{scroll-behavior:smooth;}
+
+body{
+  background:var(--navy);
+  color:var(--white);
+  font-family:'DM Sans',sans-serif;
+  overflow-x:hidden;
+  cursor:none;
+}
+
+/* ── Custom Cursor ── */
+.cursor{
+  width:12px;height:12px;
+  background:var(--teal);
+  border-radius:50%;
+  position:fixed;top:0;left:0;
+  pointer-events:none;
+  z-index:9999;
+  transition:transform 0.1s;
+  mix-blend-mode:difference;
+}
+.cursor-ring{
+  width:36px;height:36px;
+  border:1.5px solid var(--teal);
+  border-radius:50%;
+  position:fixed;top:0;left:0;
+  pointer-events:none;
+  z-index:9998;
+  transition:all 0.15s ease;
+  opacity:0.5;
+}
+
+/* ── BG Canvas ── */
+#bg-canvas{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  z-index:0;pointer-events:none;
+  opacity:0.4;
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;
+  z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 60px;
+  background:rgba(10,22,40,0.85);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{
+  font-family:'Syne',sans-serif;
+  font-size:22px;font-weight:800;
+  background:linear-gradient(90deg,var(--teal),var(--teal2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  letter-spacing:-0.5px;
+}
+.nav-links{display:flex;gap:36px;list-style:none;}
+.nav-links a{
+  font-family:'DM Mono',monospace;
+  font-size:12px;letter-spacing:1.5px;
+  color:var(--muted);text-decoration:none;
+  text-transform:uppercase;
+  transition:color 0.3s;
+  position:relative;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:-4px;left:0;
+  width:0;height:1px;background:var(--teal);
+  transition:width 0.3s;
+}
+.nav-links a:hover{color:var(--teal);}
+.nav-links a:hover::after{width:100%;}
+
+/* ── HERO ── */
+#hero{
+  min-height:100vh;
+  display:flex;align-items:center;
+  padding:120px 60px 80px;
+  position:relative;z-index:1;
+}
+.hero-inner{max-width:1200px;margin:0 auto;width:100%;}
+.hero-tag{
+  font-family:'DM Mono',monospace;
+  font-size:12px;letter-spacing:3px;color:var(--teal);
+  text-transform:uppercase;
+  display:flex;align-items:center;gap:12px;
+  margin-bottom:28px;
+  opacity:0;animation:fadeUp 0.8s 0.2s forwards;
+}
+.hero-tag::before{content:'';width:40px;height:1px;background:var(--teal);}
+.hero-name{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(64px,9vw,130px);
+  font-weight:800;
+  line-height:0.9;
+  letter-spacing:-4px;
+  margin-bottom:24px;
+  opacity:0;animation:fadeUp 0.8s 0.4s forwards;
+}
+.hero-name span{
+  display:block;
+  background:linear-gradient(135deg,var(--white) 40%,var(--teal) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.hero-name .accent{
+  background:linear-gradient(135deg,var(--teal) 0%,var(--teal2) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  font-size:0.55em;letter-spacing:-1px;
+  display:block;margin-top:8px;
+}
+.hero-desc{
+  max-width:560px;
+  font-size:18px;line-height:1.7;
+  color:rgba(240,244,255,0.65);
+  margin-bottom:48px;
+  opacity:0;animation:fadeUp 0.8s 0.6s forwards;
+}
+.hero-ctas{
+  display:flex;gap:16px;flex-wrap:wrap;
+  opacity:0;animation:fadeUp 0.8s 0.8s forwards;
+}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:14px 32px;
+  background:linear-gradient(135deg,var(--teal),var(--teal2));
+  color:var(--navy);font-family:'Syne',sans-serif;
+  font-size:14px;font-weight:700;letter-spacing:0.5px;
+  border:none;border-radius:4px;
+  text-decoration:none;cursor:none;
+  transition:transform 0.2s,box-shadow 0.2s;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,212,255,0.4);}
+.btn-outline{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:14px 32px;
+  background:transparent;
+  color:var(--white);font-family:'Syne',sans-serif;
+  font-size:14px;font-weight:600;letter-spacing:0.5px;
+  border:1.5px solid var(--border);border-radius:4px;
+  text-decoration:none;cursor:none;
+  transition:all 0.2s;
+}
+.btn-outline:hover{border-color:var(--teal);color:var(--teal);background:rgba(0,212,255,0.05);}
+
+.hero-stats{
+  display:flex;gap:48px;margin-top:72px;padding-top:48px;
+  border-top:1px solid var(--border);
+  opacity:0;animation:fadeUp 0.8s 1s forwards;
+}
+.stat-num{
+  font-family:'Syne',sans-serif;font-size:42px;font-weight:800;
+  background:linear-gradient(135deg,var(--teal),var(--teal2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.stat-label{font-size:12px;color:var(--muted);letter-spacing:1px;margin-top:4px;}
+
+/* ── SECTIONS COMMON ── */
+section{
+  padding:100px 60px;
+  position:relative;z-index:1;
+  max-width:1300px;margin:0 auto;
+}
+.section-tag{
+  font-family:'DM Mono',monospace;
+  font-size:11px;letter-spacing:3px;color:var(--teal);
+  text-transform:uppercase;margin-bottom:12px;
+  display:flex;align-items:center;gap:12px;
+}
+.section-tag::before{content:'';width:30px;height:1px;background:var(--teal);}
+.section-title{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(36px,5vw,60px);font-weight:800;
+  letter-spacing:-2px;line-height:1;
+  margin-bottom:60px;
+}
+.section-title em{
+  font-style:normal;
+  background:linear-gradient(135deg,var(--teal),var(--teal2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+
+/* ── ABOUT ── */
+#about{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:80px;align-items:center;
+  padding:100px 60px;
+  max-width:1300px;margin:0 auto;
+}
+.about-left .section-title{margin-bottom:24px;}
+.about-text{
+  font-size:17px;line-height:1.85;
+  color:rgba(240,244,255,0.7);margin-bottom:20px;
+}
+.about-text strong{color:var(--white);}
+.about-right{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:40px;
+  backdrop-filter:blur(20px);
+  position:relative;overflow:hidden;
+}
+.about-right::before{
+  content:'';position:absolute;top:-60px;right:-60px;
+  width:200px;height:200px;
+  background:radial-gradient(circle,rgba(0,212,255,0.15),transparent 70%);
+}
+.info-row{
+  display:flex;align-items:center;gap:16px;
+  padding:14px 0;border-bottom:1px solid var(--border);
+  font-size:14px;
+}
+.info-row:last-child{border-bottom:none;}
+.info-label{color:var(--muted);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;min-width:100px;}
+.info-val{color:var(--white);font-weight:500;}
+.info-val a{color:var(--teal);text-decoration:none;}
+.coming-soon{
+  font-family:'DM Mono',monospace;font-size:10px;
+  color:var(--orange);letter-spacing:1px;
+  background:rgba(255,107,53,0.1);
+  border:1px solid rgba(255,107,53,0.3);
+  padding:2px 8px;border-radius:20px;
+}
+
+/* ── SKILLS ── */
+#skills{border-top:1px solid var(--border);}
+.skills-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:24px;
+}
+.skill-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;padding:32px;
+  backdrop-filter:blur(20px);
+  transition:transform 0.3s,border-color 0.3s,box-shadow 0.3s;
+  position:relative;overflow:hidden;
+}
+.skill-card::before{
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--teal),var(--teal2));
+  transform:scaleX(0);transform-origin:left;
+  transition:transform 0.3s;
+}
+.skill-card:hover{transform:translateY(-4px);border-color:rgba(0,212,255,0.3);box-shadow:var(--glow);}
+.skill-card:hover::before{transform:scaleX(1);}
+.skill-icon{font-size:32px;margin-bottom:16px;}
+.skill-cat{
+  font-family:'Syne',sans-serif;font-size:16px;font-weight:700;
+  color:var(--white);margin-bottom:16px;
+}
+.skill-tags{display:flex;flex-wrap:wrap;gap:8px;}
+.tag{
+  font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.5px;
+  padding:5px 12px;border-radius:20px;
+  background:rgba(0,212,255,0.08);
+  border:1px solid rgba(0,212,255,0.2);
+  color:var(--teal);
+  transition:all 0.2s;
+}
+.tag:hover{background:rgba(0,212,255,0.15);border-color:var(--teal);}
+
+/* ── EXPERIENCE ── */
+#experience{border-top:1px solid var(--border);}
+.timeline{position:relative;padding-left:40px;}
+.timeline::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;
+  width:1px;background:linear-gradient(to bottom,var(--teal),transparent);
+}
+.timeline-item{
+  position:relative;margin-bottom:60px;
+  opacity:0;transform:translateX(-20px);
+  transition:all 0.6s ease;
+}
+.timeline-item.visible{opacity:1;transform:translateX(0);}
+.timeline-dot{
+  position:absolute;left:-46px;top:6px;
+  width:13px;height:13px;border-radius:50%;
+  background:var(--navy);
+  border:2px solid var(--teal);
+  box-shadow:0 0 12px rgba(0,212,255,0.5);
+}
+.job-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;padding:32px;
+  backdrop-filter:blur(20px);
+  transition:border-color 0.3s;
+}
+.job-card:hover{border-color:rgba(0,212,255,0.3);}
+.job-header{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:6px;}
+.job-role{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;}
+.job-period{
+  font-family:'DM Mono',monospace;font-size:11px;
+  color:var(--teal);letter-spacing:1px;
+  background:rgba(0,212,255,0.08);
+  border:1px solid rgba(0,212,255,0.2);
+  padding:4px 12px;border-radius:20px;
+  white-space:nowrap;
+}
+.job-company{
+  font-size:14px;color:var(--muted);margin-bottom:20px;
+  font-family:'DM Mono',monospace;letter-spacing:0.5px;
+}
+.job-bullets{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.job-bullets li{
+  font-size:14px;color:rgba(240,244,255,0.7);line-height:1.6;
+  padding-left:20px;position:relative;
+}
+.job-bullets li::before{
+  content:'▸';position:absolute;left:0;
+  color:var(--teal);font-size:12px;top:2px;
+}
+.job-bullets li strong{color:var(--white);}
+
+/* ── CERTIFICATIONS ── */
+#certifications{border-top:1px solid var(--border);}
+.cert-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;}
+.cert-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;padding:32px;
+  backdrop-filter:blur(20px);
+  display:flex;align-items:flex-start;gap:20px;
+  transition:all 0.3s;
+  position:relative;overflow:hidden;
+}
+.cert-card::after{
+  content:'';position:absolute;
+  bottom:-40px;right:-40px;
+  width:120px;height:120px;
+  background:radial-gradient(circle,rgba(0,212,255,0.08),transparent 70%);
+}
+.cert-card:hover{transform:translateY(-4px);border-color:rgba(0,212,255,0.3);box-shadow:var(--glow);}
+.cert-badge{
+  width:52px;height:52px;flex-shrink:0;
+  background:linear-gradient(135deg,rgba(0,212,255,0.15),rgba(0,255,204,0.1));
+  border:1px solid rgba(0,212,255,0.3);
+  border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;
+}
+.cert-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:6px;line-height:1.3;}
+.cert-issuer{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:0.5px;margin-bottom:12px;}
+.cert-link{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:'DM Mono',monospace;font-size:11px;
+  color:var(--teal);text-decoration:none;
+  border-bottom:1px dashed rgba(0,212,255,0.4);
+  padding-bottom:1px;
+  transition:border-color 0.2s;
+}
+.cert-link:hover{border-color:var(--teal);}
+.cert-link.pending{color:var(--muted);border-color:rgba(136,153,187,0.3);cursor:default;}
+
+/* ── PROJECTS ── */
+#projects{border-top:1px solid var(--border);}
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;}
+.project-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;padding:32px;
+  backdrop-filter:blur(20px);
+  transition:all 0.3s;
+  position:relative;overflow:hidden;
+}
+.project-card:hover{transform:translateY(-4px);border-color:rgba(0,212,255,0.3);box-shadow:var(--glow);}
+.project-card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.project-icon{font-size:28px;}
+.project-links{display:flex;gap:10px;}
+.project-link{
+  font-family:'DM Mono',monospace;font-size:11px;
+  color:var(--muted);text-decoration:none;
+  padding:4px 10px;border-radius:4px;
+  border:1px solid var(--border);
+  transition:all 0.2s;
+}
+.project-link:hover{color:var(--teal);border-color:rgba(0,212,255,0.3);}
+.project-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin-bottom:10px;}
+.project-desc{font-size:14px;color:rgba(240,244,255,0.6);line-height:1.6;margin-bottom:20px;}
+.project-tags{display:flex;flex-wrap:wrap;gap:8px;}
+.coming-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;
+  color:var(--orange);
+  background:rgba(255,107,53,0.08);
+  border:1px solid rgba(255,107,53,0.2);
+  padding:3px 10px;border-radius:20px;
+}
+
+/* ── CONTACT ── */
+#contact{border-top:1px solid var(--border);}
+.contact-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+.contact-text{font-size:17px;color:rgba(240,244,255,0.6);line-height:1.8;margin-bottom:32px;}
+.contact-info{display:flex;flex-direction:column;gap:16px;}
+.contact-row{
+  display:flex;align-items:center;gap:14px;
+  font-size:14px;
+}
+.contact-icon{
+  width:40px;height:40px;flex-shrink:0;
+  background:rgba(0,212,255,0.08);
+  border:1px solid rgba(0,212,255,0.2);
+  border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;
+}
+.contact-val{color:var(--white);}
+.contact-val a{color:var(--teal);text-decoration:none;}
+
+/* Contact Form */
+.contact-form{display:flex;flex-direction:column;gap:16px;}
+.form-group{display:flex;flex-direction:column;gap:8px;}
+.form-label{
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;
+}
+.form-input, .form-textarea{
+  background:rgba(15,32,64,0.6);
+  border:1px solid var(--border);
+  border-radius:6px;padding:14px 16px;
+  color:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;
+  outline:none;
+  transition:border-color 0.3s,box-shadow 0.3s;
+  width:100%;
+}
+.form-input:focus, .form-textarea:focus{
+  border-color:rgba(0,212,255,0.5);
+  box-shadow:0 0 0 3px rgba(0,212,255,0.08);
+}
+.form-textarea{resize:vertical;min-height:130px;font-family:'DM Sans',sans-serif;}
+.form-input::placeholder,.form-textarea::placeholder{color:var(--muted);opacity:0.6;}
+.btn-send{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  padding:16px 36px;
+  background:linear-gradient(135deg,var(--teal),var(--teal2));
+  color:var(--navy);font-family:'Syne',sans-serif;
+  font-size:14px;font-weight:700;letter-spacing:0.5px;
+  border:none;border-radius:6px;
+  cursor:none;
+  transition:transform 0.2s,box-shadow 0.2s;
+}
+.btn-send:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,212,255,0.4);}
+
+/* ── RESUME DOWNLOAD BAR ── */
+.resume-bar{
+  margin:0 60px 60px;
+  background:linear-gradient(135deg,rgba(0,212,255,0.08),rgba(0,255,204,0.05));
+  border:1px solid rgba(0,212,255,0.2);
+  border-radius:12px;padding:40px 48px;
+  display:flex;align-items:center;justify-content:space-between;gap:32px;
+  flex-wrap:wrap;
+  position:relative;z-index:1;
+}
+.resume-bar-text h3{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;margin-bottom:6px;}
+.resume-bar-text p{color:var(--muted);font-size:14px;}
+
+/* ── FOOTER ── */
+footer{
+  text-align:center;padding:40px 60px;
+  border-top:1px solid var(--border);
+  font-family:'DM Mono',monospace;font-size:12px;
+  color:var(--muted);letter-spacing:0.5px;
+  position:relative;z-index:1;
+}
+footer span{color:var(--teal);}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(24px);}
+  to{opacity:1;transform:translateY(0);}
+}
+.reveal{
+  opacity:0;transform:translateY(30px);
+  transition:opacity 0.7s ease,transform 0.7s ease;
+}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* ── MOBILE ── */
+@media(max-width:900px){
+  nav{padding:16px 24px;}
+  .nav-links{display:none;}
+  #hero{padding:100px 24px 60px;}
+  section{padding:60px 24px;}
+  #about{grid-template-columns:1fr;gap:40px;padding:60px 24px;}
+  .contact-inner{grid-template-columns:1fr;}
+  .resume-bar{margin:0 24px 40px;padding:28px;}
+  .hero-stats{gap:28px;}
+  footer{padding:32px 24px;}
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--navy);}
+::-webkit-scrollbar-thumb{background:var(--teal);border-radius:2px;}
+</style>
 </head>
 <body>
-    <h1>Welcome to My Portfolio</h1>
-    <p>8 Years of Experience in DevOps and Cloud Architecture.</p>
+
+<canvas id="bg-canvas"></canvas>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">PRACHI.</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#certifications">Certs</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div id="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Available for opportunities</div>
+    <h1 class="hero-name">
+      <span>PRACHI</span>
+      <span class="accent">DevOps · Platform · Cloud</span>
+    </h1>
+    <p class="hero-desc">
+      Senior DevOps & Platform Engineer with <strong>7+ years</strong> building cloud-native infrastructure on Azure & Kubernetes. I turn complex infrastructure into reliable, scalable, automated systems.
+    </p>
+    <div class="hero-ctas">
+      <a href="#contact" class="btn-primary">
+        <span>⚡</span> Let's Connect
+      </a>
+      <a href="#resume-dl" class="btn-outline">
+        <span>↓</span> Download CV
+      </a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">7+</div>
+        <div class="stat-label">Years Experience</div>
+      </div>
+      <div>
+        <div class="stat-num">3×</div>
+        <div class="stat-label">Azure Certified</div>
+      </div>
+      <div>
+        <div class="stat-num">2</div>
+        <div class="stat-label">MNC's</div>
+      </div>
+      <div>
+        <div class="stat-num">4×</div>
+        <div class="stat-label">Awards Won</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-left reveal">
+    <div class="section-tag">01 / About</div>
+    <h2 class="section-title">Building infra<br/><em>that doesn't sleep.</em></h2>
+    <p class="about-text">
+      I'm a Senior DevOps & Platform Engineer based in <strong>Gurugram, India</strong>, currently at <strong>Capgemini</strong>. I specialise in designing and operating cloud-native platforms that support microservices, data workloads, and high-traffic production environments.
+    </p>
+    <p class="about-text">
+      From leading zero-downtime brand launches to automating Databricks access governance — I bridge the gap between infrastructure complexity and developer velocity.
+    </p>
+    <p class="about-text">
+      Growing interest in <strong>ML Infrastructure</strong> and platform engineering at scale.
+    </p>
+  </div>
+  <div class="about-right reveal">
+    <div class="info-row">
+      <span class="info-label">LOCATION</span>
+      <span class="info-val">Gurugram, HR, India</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">CURRENT</span>
+      <span class="info-val">Capgemini — Senior DevOps Consultant</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">EXPERIENCE</span>
+      <span class="info-val">7+ Years</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">FOCUS</span>
+      <span class="info-val">Azure · Kubernetes · IaC · DataOps</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">PORTFOLIO</span>
+      <span class="info-val"><span class="coming-soon">⏳ coming soon</span></span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">GITHUB</span>
+      <span class="info-val"><span class="coming-soon">⏳ coming soon</span></span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">OPEN TO</span>
+      <span class="info-val">Relocation · Remote · Senior / Lead Roles</span>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-tag reveal">02 / Skills</div>
+  <h2 class="section-title reveal">The <em>tech stack</em><br/>behind the magic.</h2>
+  <div class="skills-grid">
+    <div class="skill-card reveal">
+      <div class="skill-icon">☁️</div>
+      <div class="skill-cat">Cloud & Infrastructure</div>
+      <div class="skill-tags">
+        <span class="tag">Azure</span><span class="tag">AKS</span><span class="tag">ACR</span>
+        <span class="tag">Azure Monitor</span><span class="tag">RBAC</span><span class="tag">VNet</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">🐳</div>
+      <div class="skill-cat">Containers & Orchestration</div>
+      <div class="skill-tags">
+        <span class="tag">Kubernetes</span><span class="tag">Docker</span><span class="tag">Helm</span>
+        <span class="tag">AKS</span><span class="tag">Resource Tuning</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">🔧</div>
+      <div class="skill-cat">Infrastructure as Code</div>
+      <div class="skill-tags">
+        <span class="tag">Terraform</span><span class="tag">Ansible</span>
+        <span class="tag">Bash</span><span class="tag">YAML</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">🚀</div>
+      <div class="skill-cat">CI/CD & DevOps</div>
+      <div class="skill-tags">
+        <span class="tag">Azure DevOps</span><span class="tag">Jenkins</span>
+        <span class="tag">Nexus</span><span class="tag">SonarQube</span><span class="tag">Maven</span><span class="tag">Git</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">📊</div>
+      <div class="skill-cat">Observability</div>
+      <div class="skill-tags">
+        <span class="tag">Datadog APM</span><span class="tag">Azure Monitor</span>
+        <span class="tag">ServiceNow</span><span class="tag">Dashboards</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">🔒</div>
+      <div class="skill-cat">Security & Edge</div>
+      <div class="skill-tags">
+        <span class="tag">Akamai</span><span class="tag">SCIM</span>
+        <span class="tag">SonarQube</span><span class="tag">DevSecOps</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">🗄️</div>
+      <div class="skill-cat">DataOps & Data Platform</div>
+      <div class="skill-tags">
+        <span class="tag">Databricks</span><span class="tag">Unity Catalog</span>
+        <span class="tag">SQL</span><span class="tag">REST APIs</span><span class="tag">SOAP</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">💻</div>
+      <div class="skill-cat">Languages & Tools</div>
+      <div class="skill-tags">
+        <span class="tag">Python</span><span class="tag">Bash</span>
+        <span class="tag">SQL</span><span class="tag">Git</span><span class="tag">Linux</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-tag reveal">03 / Experience</div>
+  <h2 class="section-title reveal">7 years.<br/><em>Zero boring days.</em></h2>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="job-card">
+        <div class="job-header">
+          <div class="job-role">Senior DevOps Consultant</div>
+          <div class="job-period">Jun 2024 — Present</div>
+        </div>
+        <div class="job-company">Capgemini · Gurugram, India</div>
+        <ul class="job-bullets">
+          <li>Led end-to-end go-live of a new brand — infra setup, production deployment & Akamai CDN config. <strong>Zero-downtime launch.</strong></li>
+          <li>Architected multi-stage CI/CD pipelines with parallel execution on Azure DevOps — <strong>significantly reduced deployment time.</strong></li>
+          <li>Optimised AKS resource requests/limits using Datadog usage-trend analysis — <strong>cut cloud costs measurably.</strong></li>
+          <li>Implemented <strong>SCIM-based Databricks provisioning</strong> with Unity Catalog governance across multiple workspaces.</li>
+          <li>Automated Azure infrastructure end-to-end with Terraform modules — consistent, version-controlled environments.</li>
+          <li>Configured <strong>Akamai Property Manager & Cloudlets</strong> for traffic routing, edge caching, and security enforcement.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="job-card">
+        <div class="job-header">
+          <div class="job-role">DevOps Consultant</div>
+          <div class="job-period">Jul 2022 — Jun 2024</div>
+        </div>
+        <div class="job-company">Tata Consultancy Services (TCS) · Noida, India</div>
+        <ul class="job-bullets">
+          <li>Designed Datadog APM dashboards integrated with ServiceNow — <strong>reduced MTTR</strong> for production incidents.</li>
+          <li>Built Ansible playbooks & Bash scripts — eliminated manual configuration drift across all environments.</li>
+          <li>Led CI/CD automation with Jenkins, Maven & Git — standardised build & deployment workflows across teams.</li>
+          <li>Performed root cause analysis on complex production incidents with full post-incident action plans.</li>
+          <li>Delivered REST API & SOAP-based integrations to automate operational workflows at scale.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="job-card">
+        <div class="job-header">
+          <div class="job-role">DevOps Engineer</div>
+          <div class="job-period">Mar 2018 — Jul 2022</div>
+        </div>
+        <div class="job-company">Tata Consultancy Services (TCS) · Noida, India</div>
+        <ul class="job-bullets">
+          <li>Implemented Datadog APM monitoring from scratch — dashboards, alerts & ServiceNow integration.</li>
+          <li>Automated infrastructure config management with Ansible & Bash across distributed Linux environments.</li>
+          <li>Drove CI/CD adoption with Jenkins pipelines — reduced manual release cycles significantly.</li>
+          <li>Received <strong>3× On-the-Spot TCS Awards</strong> for exceptional incident response & automation contributions.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="section-tag reveal">04 / Certifications</div>
+  <h2 class="section-title reveal"><em>Microsoft</em><br/>Azure Certified.</h2>
+  <div class="cert-grid">
+    <div class="cert-card reveal">
+      <div class="cert-badge">🏆</div>
+      <div>
+        <div class="cert-name">Azure Solutions Architect Expert</div>
+        <div class="cert-issuer">Microsoft Certified · Issued Oct 2023</div>
+        <a class="cert-link pending" href="#">⏳ Verification link coming soon</a>
+      </div>
+    </div>
+    <div class="cert-card reveal">
+      <div class="cert-badge">🏆</div>
+      <div>
+        <div class="cert-name">Azure DevOps Engineer Expert</div>
+        <div class="cert-issuer">Microsoft Certified · Issued Nov 2021</div>
+        <a class="cert-link pending" href="#">⏳ Verification link coming soon</a>
+      </div>
+    </div>
+    <div class="cert-card reveal">
+      <div class="cert-badge">🏆</div>
+      <div>
+        <div class="cert-name">Azure Administrator Associate</div>
+        <div class="cert-issuer">Microsoft Certified · Issued Dec 2021</div>
+        <a class="cert-link pending" href="#">⏳ Verification link coming soon</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-tag reveal">05 / Projects</div>
+  <h2 class="section-title reveal">Things I've<br/><em>built & shipped.</em></h2>
+  <div class="projects-grid">
+    <div class="project-card reveal">
+      <div class="project-card-header">
+        <div class="project-icon">⚙️</div>
+        <div class="project-links">
+          <span class="coming-badge">⏳ GitHub Soon</span>
+        </div>
+      </div>
+      <div class="project-title">Terraform Azure Bootstrapper</div>
+      <div class="project-desc">Reusable Terraform modules for bootstrapping Azure environments — AKS, ACR, VNet, RBAC, and monitoring — in one command.</div>
+      <div class="project-tags">
+        <span class="tag">Terraform</span><span class="tag">Azure</span><span class="tag">AKS</span>
+      </div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-card-header">
+        <div class="project-icon">🔍</div>
+        <div class="project-links">
+          <span class="coming-badge">⏳ GitHub Soon</span>
+        </div>
+      </div>
+      <div class="project-title">Datadog Incident Automation</div>
+      <div class="project-desc">Python-based automation connecting Datadog alerts to ServiceNow incidents with auto-enrichment and runbook linking.</div>
+      <div class="project-tags">
+        <span class="tag">Python</span><span class="tag">Datadog</span><span class="tag">ServiceNow</span>
+      </div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-card-header">
+        <div class="project-icon">🗂️</div>
+        <div class="project-links">
+          <span class="coming-badge">⏳ GitHub Soon</span>
+        </div>
+      </div>
+      <div class="project-title">Databricks SCIM Provisioner</div>
+      <div class="project-desc">Automated user & group provisioning across multiple Databricks workspaces using SCIM + Unity Catalog governance policies.</div>
+      <div class="project-tags">
+        <span class="tag">Databricks</span><span class="tag">SCIM</span><span class="tag">Python</span>
+      </div>
+    </div>
+  </div>
+  <p style="margin-top:32px;font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);text-align:center;letter-spacing:1px;">
+    🚧 More projects dropping soon — GitHub portfolio in progress
+  </p>
+</section>
+
+<!-- RESUME DOWNLOAD -->
+<div class="resume-bar reveal" id="resume-dl">
+  <div class="resume-bar-text">
+    <h3>Want the full picture?</h3>
+    <p>Download my CV — optimised for ATS & MNC recruiters.</p>
+  </div>
+  <a href="Prachi_CV_Optimised.docx" download class="btn-primary">
+    ↓ &nbsp;Download CV (.docx)
+  </a>
+</div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-tag reveal">06 / Contact</div>
+  <h2 class="section-title reveal">Let's build<br/><em>something great.</em></h2>
+  <div class="contact-inner">
+    <div class="reveal">
+      <p class="contact-text">
+        Open to Senior DevOps, Platform Engineering, and Cloud Architecture roles at MNCs and product companies. I'm also happy to chat about infrastructure architecture, Kubernetes, or anything cloud-native.
+      </p>
+      <div class="contact-info">
+        <div class="contact-row">
+          <div class="contact-icon">📍</div>
+          <div class="contact-val">Gurugram, HR, India</div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">📧</div>
+          <div class="contact-val"><a href="mailto:prachi@email.com">prachi@email.com</a></div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">🔗</div>
+          <div class="contact-val"><a href="https://linkedin.com/in/prachi" target="_blank">linkedin.com/in/prachi</a></div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">💻</div>
+          <div class="contact-val"><span class="coming-soon">GitHub coming soon</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal">
+      <form class="contact-form" onsubmit="handleSubmit(event)">
+        <div class="form-group">
+          <label class="form-label">Your Name</label>
+          <input type="text" class="form-input" placeholder="Jane Smith" required/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" placeholder="jane@company.com" required/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Message</label>
+          <textarea class="form-textarea" placeholder="Tell me about the opportunity or what you'd like to discuss..." required></textarea>
+        </div>
+        <button type="submit" class="btn-send">
+          ⚡ Send Message
+        </button>
+        <p id="form-msg" style="display:none;font-family:'DM Mono',monospace;font-size:12px;color:var(--teal);margin-top:8px;"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  Built with 💙 · <span>Prachi</span> · DevOps & Platform Engineer · Gurugram, India
+</footer>
+
+<script>
+// ── Animated BG ──────────────────────────────────────────
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+
+const nodes = Array.from({length: 60}, () => ({
+  x: Math.random() * canvas.width,
+  y: Math.random() * canvas.height,
+  vx: (Math.random() - 0.5) * 0.4,
+  vy: (Math.random() - 0.5) * 0.4,
+  r: Math.random() * 2 + 1
+}));
+
+function drawCanvas() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  nodes.forEach(n => {
+    n.x += n.vx; n.y += n.vy;
+    if (n.x < 0 || n.x > canvas.width) n.vx *= -1;
+    if (n.y < 0 || n.y > canvas.height) n.vy *= -1;
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(0,212,255,0.5)';
+    ctx.fill();
+  });
+  for (let i = 0; i < nodes.length; i++) {
+    for (let j = i+1; j < nodes.length; j++) {
+      const dx = nodes[i].x - nodes[j].x;
+      const dy = nodes[i].y - nodes[j].y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < 120) {
+        ctx.beginPath();
+        ctx.moveTo(nodes[i].x, nodes[i].y);
+        ctx.lineTo(nodes[j].x, nodes[j].y);
+        ctx.strokeStyle = `rgba(0,212,255,${0.15 * (1 - dist/120)})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(drawCanvas);
+}
+drawCanvas();
+
+// ── Custom Cursor ─────────────────────────────────────────
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+function animateCursor() {
+  cursor.style.transform = `translate(${mx-6}px,${my-6}px)`;
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.transform = `translate(${rx-18}px,${ry-18}px)`;
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
+document.querySelectorAll('a,button,.skill-card,.job-card,.cert-card,.project-card').forEach(el => {
+  el.addEventListener('mouseenter', () => { cursor.style.transform += ' scale(1.8)'; ring.style.opacity = '1'; });
+  el.addEventListener('mouseleave', () => { ring.style.opacity = '0.5'; });
+});
+
+// ── Scroll Reveal ─────────────────────────────────────────
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      if (e.target.classList.contains('timeline-item')) e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+document.querySelectorAll('.reveal,.timeline-item').forEach(el => observer.observe(el));
+
+// ── Contact Form ──────────────────────────────────────────
+function handleSubmit(e) {
+  e.preventDefault();
+  const msg = document.getElementById('form-msg');
+  msg.textContent = '✅ Message sent! I\'ll get back to you soon.';
+  msg.style.display = 'block';
+  e.target.reset();
+  setTimeout(() => msg.style.display = 'none', 5000);
+}
+</script>
 </body>
 </html>
