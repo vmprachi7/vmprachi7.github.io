@@ -494,7 +494,7 @@ footer span{color:var(--c1);}
     <div class="hero-btns">
       <a href="#contact" class="btn-glow">⚡ &nbsp;Let's Connect</a>
       <a href="#experience" class="btn-glass">📋 &nbsp;View Experience</a>
-      <a href="Prachi_CV_Final.docx" download class="btn-glass">↓ &nbsp;Download CV</a>
+      <a href="Prachi_CV_Final.pdf" download class="btn-glass">↓ &nbsp;Download CV</a>
     </div>
     <div class="hero-stats">
       <div class="stat"><div class="stat-n">8+</div><div class="stat-l">Years Exp.</div></div>
@@ -683,7 +683,7 @@ footer span{color:var(--c1);}
         <div class="cert-ico">🏆</div>
         <div>
           <div class="cert-name">Azure Solutions Architect Expert</div>
-          <div class="cert-by">Microsoft Certified · Oct 2023</div>
+          <div class="cert-by">Microsoft Certified</div>
           <a class="cert-lnk" href="https://drive.google.com/file/d/1vRATXKIgQ_D_ZpM6JqiAj3Hpl9OIQcjS/view?usp=share_link" target="_blank">↗ &nbsp;Verify Certificate</a>
         </div>
       </div>
@@ -746,7 +746,7 @@ footer span{color:var(--c1);}
     <h3>Want the full picture?</h3>
     <p>My CV is optimised for ATS & MNC recruiters — ready to download.</p>
   </div>
-  <a href="Prachi_CV_Final.docx" download class="btn-glow">↓ &nbsp;Download CV (.docx)</a>
+  <a href="Prachi_CV_Final.pdf" download class="btn-glow">↓ &nbsp;Download CV (.pdf)</a>
 </div>
 
 <!-- ── CONTACT ── -->
@@ -765,12 +765,12 @@ footer span{color:var(--c1);}
         </div>
       </div>
       <div class="rev">
-        <form class="form-glass" onsubmit="handleForm(event)">
-          <div><label class="f-label">Your Name</label><input type="text" class="f-input" placeholder="Jane Smith" required/></div>
-          <div><label class="f-label">Email</label><input type="email" class="f-input" placeholder="jane@company.com" required/></div>
-          <div><label class="f-label">Message</label><textarea class="f-area" placeholder="Tell me about the opportunity..." required></textarea></div>
-          <button type="submit" class="btn-glow" style="cursor:none;border:none;width:100%;justify-content:center;padding:14px;">⚡ &nbsp;Send Message</button>
-          <p id="fmsg" style="display:none;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--c4);letter-spacing:0.5px;text-align:center;"></p>
+        <form class="form-glass" id="contact-form">
+          <div><label class="f-label">Your Name</label><input type="text" name="name" class="f-input" placeholder="Jane Smith" required/></div>
+          <div><label class="f-label">Email</label><input type="email" name="email" class="f-input" placeholder="jane@company.com" required/></div>
+          <div><label class="f-label">Message</label><textarea name="message" class="f-area" placeholder="Tell me about the opportunity..." required></textarea></div>
+          <button type="submit" id="submit-btn" class="btn-glow" style="cursor:none;border:none;width:100%;justify-content:center;padding:14px;">⚡ &nbsp;Send Message</button>
+          <p id="fmsg" style="display:none;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.5px;text-align:center;"></p>
         </form>
       </div>
     </div>
@@ -804,15 +804,39 @@ document.querySelectorAll('.rev,.tl-item').forEach(el=>obs.observe(el));
 // Stagger cards
 document.querySelectorAll('.skills-grid .skill-card,.cert-grid .cert-card,.proj-grid .proj-card,.writing-grid .writing-card').forEach((el,i)=>{el.style.transitionDelay=(i*0.08)+'s';});
 
-// Form
-function handleForm(e){
+// Formspree real email
+const form=document.getElementById('contact-form');
+const btn=document.getElementById('submit-btn');
+const msg=document.getElementById('fmsg');
+form.addEventListener('submit',async(e)=>{
   e.preventDefault();
-  const msg=document.getElementById('fmsg');
-  msg.textContent="✓ Message sent! I'll get back to you soon.";
-  msg.style.display='block';
-  e.target.reset();
-  setTimeout(()=>msg.style.display='none',5000);
-}
+  btn.textContent='Sending...';
+  btn.disabled=true;
+  try{
+    const res=await fetch('https://formspree.io/f/xwvywqwb',{
+      method:'POST',
+      headers:{'Accept':'application/json'},
+      body:new FormData(form)
+    });
+    if(res.ok){
+      msg.textContent='✓ Message sent! I\'ll get back to you soon.';
+      msg.style.color='var(--c4)';
+      msg.style.display='block';
+      form.reset();
+      btn.textContent='⚡  Send Message';
+      btn.disabled=false;
+      setTimeout(()=>msg.style.display='none',6000);
+    } else {
+      throw new Error('Failed');
+    }
+  } catch{
+    msg.textContent='✗ Something went wrong — email me directly at vmprachi7@gmail.com';
+    msg.style.color='var(--c5)';
+    msg.style.display='block';
+    btn.textContent='⚡  Send Message';
+    btn.disabled=false;
+  }
+});
 
 // Nav active
 const sections=document.querySelectorAll('section[id]');
